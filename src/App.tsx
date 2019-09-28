@@ -1,26 +1,10 @@
 import React, { useState } from "react";
 import { Store } from "./Store";
-import { CustomGridColumn } from "./AppStyled";
-import { Grid, Image, Container } from "semantic-ui-react";
+import { IEpisode, IAction } from "./interfaces";
+import { CustomGridColumn, Header } from "./AppStyled";
+import { Grid, Image, Button } from "semantic-ui-react";
 
 import Todo from "./Todo";
-
-interface IEpisode {
-  airdate: string;
-  airstamp: string;
-  airtime: string;
-  id: number;
-  image: {
-    medium: string;
-    original: string;
-  };
-  name: string;
-  number: number;
-  runtime: number;
-  season: number;
-  summary: string;
-  url: string;
-}
 
 function App(): JSX.Element {
   const { state, dispatch } = React.useContext(Store);
@@ -43,24 +27,35 @@ function App(): JSX.Element {
     state.episodes.length === 0 && fetchDataAction();
   }, []);
 
+  const toggleFavAction = (episode: IEpisode): IAction =>
+    dispatch({
+      type: "ADD_FAV",
+      payload: episode
+    });
+
   return (
-    <Container>
-      <h1>Hello</h1>
-      <Grid>
-        <Grid.Row columns={3}>
-          {state.episodes &&
-            state.episodes.map((episode: IEpisode) => (
-              <CustomGridColumn key={episode.id}>
-                <Image
-                  src={episode.image.medium}
-                  alt={`Rick and Morty episode${episode.name}`}
-                />
-                <div key={episode.id}>{episode.name}</div>
-              </CustomGridColumn>
-            ))}
-        </Grid.Row>
-      </Grid>
-    </Container>
+    <>
+      <Header>
+        <h1>Hello</h1>
+      </Header>
+      <div style={{ margin: 10 }}>
+        <Grid>
+          <Grid.Row columns={3}>
+            {state.episodes &&
+              state.episodes.map((episode: IEpisode) => (
+                <CustomGridColumn key={episode.id}>
+                  <Image
+                    src={episode.image.medium}
+                    alt={`Rick and Morty episode${episode.name}`}
+                  />
+                  <div key={episode.id}>{episode.name}</div>
+                  <Button onClick={() => toggleFavAction(episode)}>Fav</Button>
+                </CustomGridColumn>
+              ))}
+          </Grid.Row>
+        </Grid>
+      </div>
+    </>
   );
 }
 

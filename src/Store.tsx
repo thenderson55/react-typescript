@@ -1,14 +1,6 @@
 import React from "react";
-
-interface IState {
-  episodes: [];
-  favourites: [];
-}
-
-interface IAction {
-  type: string;
-  payload: any;
-}
+import { anyTypeAnnotation } from "@babel/types";
+import { IAction, IState } from "./interfaces";
 
 // needs to be above store
 const initialState: IState = {
@@ -20,6 +12,8 @@ function reducer(state: IState, action: IAction): IState {
   switch (action.type) {
     case "FETCH_DATA":
       return { ...state, episodes: action.payload };
+    case "ADD_FAV":
+      return { ...state, favourites: [...state.favourites, action.payload] };
     default:
       return state;
   }
