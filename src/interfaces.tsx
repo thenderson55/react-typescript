@@ -11,7 +11,7 @@ export interface IState {
 
 export interface IAction {
   type: string;
-  payload: any;
+  payload: Array<IEpisode>;
 }
 
 export interface IEpisode {
@@ -29,4 +29,10 @@ export interface IEpisode {
   season: number;
   summary: string;
   url: string;
+}
+
+export interface IEpisodesProps {
+  episodes: Array<IEpisode>;
+  favourites: Array<IEpisode>;
+  toggleFavAction: (episode: IEpisode) => IAction;
 }
